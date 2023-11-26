@@ -13,14 +13,13 @@ from wordcloud import WordCloud,STOPWORDS
 @st.cache_data()
 def load_data():
     df = pd.read_csv('data_db.csv')
-    sampled_data = df.sample(n=50000, random_state=42)
-    sampled_data.target = sampled_data.target.map(
+    df.target = df.target.map(
     {
         0: "NEGATIVE",
         4: "POSITIVE",
     }
 )
-    return sampled_data
+    return df
 
 def styled_dataframe_description(dataframe, size):
     # Style the DataFrame description using HTML
