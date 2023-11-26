@@ -142,7 +142,7 @@ def main():
 
     # Load tweet data
     tweet_data = load_data()
-    url = "https://5b73-213-55-220-40.ngrok-free.app//predict"
+    url = "https://c054-213-55-220-81.ngrok-free.app//predict"
 
     # Sidebar navigation
     selected_page = st.sidebar.selectbox("Choisir une page", options=["EDA", "Analyse de Sentiment"])
