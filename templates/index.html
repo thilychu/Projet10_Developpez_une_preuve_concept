@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<title>Sentiment Analysis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Web Application Manifest -->
+<link rel="manifest" href='data:application/manifest+json,{ "name": "Flask App", "short_name": "Flask App", "display": "standalone" }' />
+<style>
+body {font-family: Arial, Helvetica, sans-serif;
+background-color:   #e6ecff;}
+* {box-sizing: border-box;}
+input[type=text], select, textarea {
+width: 100%;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+margin-top: 6px;
+margin-bottom: 16px;
+resize: vertical;
+}
+input[type=submit] {
+background-color: #4CAF50;
+color: white;
+padding: 12px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;}
+input[type=submit]:hover {
+background-color: #45a049;}
+.container {
+border-radius: 5px;
+background-color:  #f2f2f2;
+padding: 20px;
+}
+</style>
+</head>
+<body>
+<h1 align="center" style="color: #000066">SENTIMENT ANALYSER</h1>
+<div class="container">
+<form id="form">
+<label for="subject">Present your thoughts here to analyze</label>
+<textarea id="name" name="name" placeholder="Write something.." style="height:200px"></textarea>
+<input type = "submit" name = "submit"> <!-- submit event -->
+</form>
+</div>
+<h2>Analysis : <span id="polarity"><span></h2>
+<script>
+$("#form").submit(function (e) {
+e.preventDefault();
+$.ajax({
+data: {
+name: $("#name").val()
+},
+type: 'POST',
+url: '/predict'
+}).done(function(data) {
+$("#polarity").text(data["result"]);});});
+</script>
+</body></html>
