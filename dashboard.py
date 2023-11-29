@@ -40,24 +40,25 @@ def eda(data):
     st.markdown(styled_text("Le dataset utilisé dans ce travail est le jeu de données Sentiment140. Il contient 1 600 000 tweets extraits à l'aide de l'API Twitter. Les tweets ont été annotés (0 = négatif, 4 = positif) et peuvent être utilisés pour détecter le sentiment.", text_size), unsafe_allow_html=True)
     
     st.markdown(styled_text("**Voici un aperçu des données brutes :**", text_size), unsafe_allow_html=True)
-    styled_dataframe_description(data.head(), text_table)
+    styled_html = f"<div style='font-size:{text_table}px;'>{data.head().to_html()}</div>"
+    st.markdown(styled_html, unsafe_allow_html=True)
     st.write("\n\n")   
     
     st.markdown(styled_text("**Statistiques descriptives sur les données brutes :**", text_size), unsafe_allow_html=True)
     data['number_character'] = data['text'].apply(len)
     data['number_of_words'] = data['text'].apply(lambda x: len(x.split()))
     data['number_sentence'] = data['text'].apply(lambda x: len(nltk.sent_tokenize(x)))
-    styled_dataframe_description(data.describe(), text_table)
+    styled_dataframe_description(data, text_table)
     st.write("\n\n")
             
     df_neg = data[data.target=="NEGATIVE"].copy()
     df_pos = data[data.target=="POSITIVE"].copy()
     st.markdown(styled_text("**Statistiques descriptives sur les données positives :**", text_size), unsafe_allow_html=True)
-    styled_dataframe_description(df_pos.describe(), text_table)
+    styled_dataframe_description(df_pos, text_table)
     st.write("\n\n")
     
     st.markdown(styled_text("**Statistiques descriptives sur les données négatives :**", text_size), unsafe_allow_html=True)
-    styled_dataframe_description(df_neg.describe(), text_table)
+    styled_dataframe_description(df_neg, text_table)
     st.write("\n\n")
             
     st.markdown(styled_text("**Le graphique de distribution de la variable cible montre que le pourcentage de tweets négatifs et positifs est équivalent.**", text_size), unsafe_allow_html=True)
