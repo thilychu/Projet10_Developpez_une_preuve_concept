@@ -13,12 +13,6 @@ from wordcloud import WordCloud,STOPWORDS
 @st.cache_data()
 def load_data():
     df = pd.read_csv('data_db.csv')
-    df.target = df.target.map(
-    {
-        0: "NEGATIVE",
-        4: "POSITIVE",
-    }
-)
     return df
 
 def styled_dataframe_description(dataframe, size):
@@ -37,20 +31,21 @@ text_table = st.sidebar.slider("Adjuster la taille su texte dans tableau", min_v
 # Function for EDA of tweet data
 def eda(data):
     st.header("Analyse exploratoire des données des tweets")
-    st.markdown(styled_text("Le dataset utilisé dans ce travail est le jeu de données Sentiment140. Il contient 1 600 000 tweets extraits à l'aide de l'API Twitter. Les tweets ont été annotés (0 = négatif, 4 = positif) et peuvent être utilisés pour détecter le sentiment.", text_size), unsafe_allow_html=True)
+    st.markdown(styled_text("Le dataset utilisé dans ce travail est le jeu de données Sentiment140. Il contient 1 600 000 tweets extraits à l'aide de l'API Twitter. Les tweets ont été annotés (0 = négatif, 4 = positif) et peuvent être utilisés pour détecter le sentiment. Nous avons nettoyé les textes avant de les utiliser pour entrainer notre modèle. Cela impliquait de supprimer des éléments indésirables tels que les caractères spéciaux, la ponctuation excessive et les balises HTML, etc. .", text_size), unsafe_allow_html=True)
     
-    st.markdown(styled_text("**Voici un aperçu des données brutes :**", text_size), unsafe_allow_html=True)
+    st.markdown(styled_text("**Voici un aperçu des textes bruts et des textes nettoyés:**", text_size), unsafe_allow_html=True)
     styled_html = f"<div style='font-size:{text_table}px;'>{data.head().to_html()}</div>"
     st.markdown(styled_html, unsafe_allow_html=True)
-    st.write("\n\n")   
-    
+    st.write("\n\n")
+ 
     st.markdown(styled_text("**Statistiques descriptives sur les données brutes :**", text_size), unsafe_allow_html=True)
     data['number_character'] = data['text'].apply(len)
     data['number_of_words'] = data['text'].apply(lambda x: len(x.split()))
     data['number_sentence'] = data['text'].apply(lambda x: len(nltk.sent_tokenize(x)))
     styled_dataframe_description(data, text_table)
     st.write("\n\n")
-            
+
+    data.drop('clean_text', axis=1, inplace=True)           
     df_neg = data[data.target=="NEGATIVE"].copy()
     df_pos = data[data.target=="POSITIVE"].copy()
     st.markdown(styled_text("**Statistiques descriptives sur les données positives :**", text_size), unsafe_allow_html=True)
